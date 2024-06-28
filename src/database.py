@@ -3,9 +3,13 @@ from typing import NamedTuple
 
 from src.utils.commonUtils import getFullPath
 
-FileInfo = NamedTuple(
-    "FileInfo", [("filename", str), ("rootDir", str), ("relDir", str), ("rank", int)]
-)
+
+class FileInfo:
+    def __init__(self, filename: str, rootDir: str, relDir: str, rank: int):
+        self.filename = filename
+        self.rootDir = rootDir
+        self.relDir = relDir
+        self.rank = rank
 
 
 class Database:
@@ -62,7 +66,11 @@ class Database:
         )
         res = res.fetchall()
 
-        return res
+        result = []
+        for e in res:
+            result.append(FileInfo(e[0], e[1], e[2], e[3]))
+
+        return result
 
     def incRank(self, filename: str):
         if not len(filename):

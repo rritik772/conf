@@ -56,10 +56,11 @@ def setupApplication(filename, dir, follow, store):
         openFile(files[0])
     else:
         result = lookForFollowFileOrDir()
-        if not result:
-            print('File does not exist')
+        if result:
+            rootDir, relDir = result
 
-        rootDir, relDir = result
+        print('File does not exist')
+
 
 
 def openFile(file: FileInfo):
@@ -69,10 +70,10 @@ def openFile(file: FileInfo):
 
     database = Database()
 
-    filename = file[0]
-    rootDir = file[1]
-    relDir = file[2]
-    __rank__ = file[3]
+    filename = file.filename
+    rootDir = file.rootDir
+    relDir = file.relDir
+    __rank__ = file.rank
 
     real_file_path = path.join(rootDir, relDir, filename)
     if not path.exists(real_file_path):
