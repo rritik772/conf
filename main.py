@@ -3,6 +3,7 @@ from click import argument, command, option
 
 from src.applicationSettings import ApplicationSettings
 from src.database import Database, FileInfo
+from src.utils.commonUtils import lookForFollowFileOrDir
 
 cli_options = {
     "dir": {
@@ -42,7 +43,7 @@ def setupApplication(filename, dir, follow, store):
     database = Database()
 
     applicationSettings.filename = filename
-    applicationSettings.follow = follow
+    applicationSettings.follow_count = follow
     applicationSettings.database_file = store
 
     applicationSettings.setDir(dir)
@@ -54,14 +55,17 @@ def setupApplication(filename, dir, follow, store):
     if len(files):
         openFile(files[0])
     else:
-        print('No files found')
+        result = lookForFollowFileOrDir()
+        if not result:
+            print('File does not exist')
+
+        rootDir, relDir = result
 
 
 def openFile(file: FileInfo):
     import sys
-    import os
     from os import path
-    from subprocess import Popen, PIPE
+    from subprocess import Popen, PIPE, run
 
     database = Database()
 

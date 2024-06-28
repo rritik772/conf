@@ -6,6 +6,7 @@ from src.utils.commonUtils import getFullPath
 class ApplicationSettings:
 
     __instance = None
+    __init = False
 
     def __new__(cls, *args, **kwargs):
         if not cls.__instance:
@@ -23,13 +24,16 @@ class ApplicationSettings:
         )
 
     def __init__(self):
-        if self.__instance:
+        if self.__init:
             return
 
         self.filename = ""
-        self.follow = 3
+        self.follow_count = 3
         self.dir = "__current"
         self.database_file = "db.sqlite"
+        self.follow = { '.git', 'Makefile', 'CMake' }
+
+        self.__init = True
 
     def setDir(self, dir):
         if dir == "__current":
