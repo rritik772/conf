@@ -42,6 +42,8 @@ store = cli_options["store"]
 @option(follow['short'], follow['long'], default=follow['default'], help=follow['help'], required=follow["required"])
 @option(store['short'],  store['long'],  default=store['default'],  help=store['help'],  required=store["required"])
 def setupApplication(filename, dir, follow, store):
+    atexit.register(exit)
+
     applicationSettings = ApplicationSettings()
     database = Database()
 
@@ -117,5 +119,4 @@ def exit():
     database.db.close()
 
 if __name__ == "__main__":
-    atexit.register(exit)
     setupApplication()
