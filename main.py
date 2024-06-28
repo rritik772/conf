@@ -76,7 +76,7 @@ def setupApplication(filename, dir, follow, store):
 
 def openFile(file: FileInfo):
     from os import path
-    from subprocess import Popen, PIPE, run
+    from subprocess import Popen
 
     database = Database()
 
