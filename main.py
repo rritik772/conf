@@ -1,3 +1,6 @@
+import sys
+from os import path
+import atexit
 from click import argument, command, option
 
 
@@ -56,15 +59,22 @@ def setupApplication(filename, dir, follow, store):
         openFile(files[0])
     else:
         result = lookForFollowFileOrDir()
-        if result:
-            rootDir, relDir = result
+        if not result:
+            print('File does not exist')
+            sys.exit(1)
 
-        print('File does not exist')
+        root_dir, rel_dir = result
+        file_info = FileInfo(filename, root_dir, rel_dir, 0)
 
+        file_path = path.join(root_dir, rel_dir, filename)
+        if not path.exists(file_path):
+            print('No such file exist')
+            sys.exit(1)
+
+        database.insertFileInfo(file_info)
 
 
 def openFile(file: FileInfo):
-    import sys
     from os import path
     from subprocess import Popen, PIPE, run
 
@@ -99,6 +109,13 @@ def openFile(file: FileInfo):
         print(err)
         sys.exit(1)
 
+def exit():
+    database = Database()
+    if not database.db:
+        return
+
+    database.db.close()
 
 if __name__ == "__main__":
+    atexit.register(exit)
     setupApplication()

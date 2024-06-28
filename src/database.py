@@ -6,6 +6,9 @@ from src.utils.commonUtils import getFullPath
 
 class FileInfo:
     def __init__(self, filename: str, rootDir: str, relDir: str, rank: int):
+        if 0 in [len(filename), len(rootDir)]:
+            raise ValueError('Filename and root must exist')
+
         self.filename = filename
         self.rootDir = rootDir
         self.relDir = relDir
@@ -81,5 +84,15 @@ class Database:
 
         self.cursor.execute(
             "UPDATE conf SET rank = rank + 1 WHERE filename = ?", [(filename)]
+        )
+        self.db.commit()
+
+    def insertFileInfo(self, fileInfo: FileInfo):
+        if not self.db or not self.cursor:
+            raise sqlite3.DatabaseError("Connection to database is not established")
+
+        self.cursor.execute(
+            'INSERT INTO conf(filename, rootDir, relDir, rank) VALUES(?, ?, ?, ?)',
+            ([ fileInfo.filename, fileInfo.rootDir, fileInfo.relDir, 0 ])
         )
         self.db.commit()
