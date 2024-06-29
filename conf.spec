@@ -3,10 +3,10 @@
 
 a = Analysis(
     ['main.py'],
-    pathex=[],
+    pathex=[ "./lib/python3.10/site-packages" ],
     binaries=[],
     datas=[],
-    hiddenimports=[],
+    hiddenimports=['toml', 'click'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

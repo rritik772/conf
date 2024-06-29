@@ -80,6 +80,7 @@ def openFile(file: FileInfo):
     from os import path
     from subprocess import Popen
 
+    applicationSettings = ApplicationSettings()
     database = Database()
 
     filename = file.filename
@@ -97,9 +98,17 @@ def openFile(file: FileInfo):
     try:
         database.incRank(filename)
         editor = path.expandvars("$EDITOR")
+        
+        cmd = f"{editor} {rel_file_path}"
+
+        if editor in applicationSettings.editors:
+            dir_arg = applicationSettings.editors[editor]['dir']
+            file_arg = applicationSettings.editors[editor]['file']
+
+            cmd = f"{editor} {dir_arg} {rootDir} {file_arg} {rel_file_path}"
 
         p: Popen = Popen(
-            [ editor, rel_file_path ], 
+            cmd.split(' '), 
             start_new_session=True, 
             cwd=rootDir,
         )
@@ -108,7 +117,7 @@ def openFile(file: FileInfo):
         sys.exit(0)
 
     except Exception as err:
-        print(err)
+        print("Error while opening file", err)
         sys.exit(1)
 
 def exit():
