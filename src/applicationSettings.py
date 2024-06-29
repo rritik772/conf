@@ -72,7 +72,7 @@ class ApplicationSettings:
             if 'editors' in conf_file:
                 self.editors = conf_file['editors']
             if 'follow' in conf_file:
-                self.follow = conf_file['follow']
+                self.follow = set(conf_file['follow'])
             if 'database_file' in conf_file:
                 self.database_file = conf_file['database_file']
 
