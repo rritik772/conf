@@ -74,6 +74,7 @@ def setupApplication(filename, dir, follow, store):
             sys.exit(1)
 
         database.insertFileInfo(file_info)
+        openFile(file_info)
 
 
 def openFile(file: FileInfo):
