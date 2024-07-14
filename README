@@ -1,0 +1,28 @@
+zoxide but for projects
+
+**NOTE** not tested for Windows and MacOS. PR helps
+
+Usage:
+1. make a new folder for config files
+  1. Windows
+    - %APPDATA%/conf/conf.toml
+  2. Linux and MacOS
+    - ~/.config/conf/conf.toml
+  3. Config contains
+  ```toml
+  database_file = '~/.config/conf/db.sqlite'
+
+  [editors.code]
+  dir = '-a'
+  file = '-g'
+  ```
+    - Explaination
+      1. store database in path
+      2. if environment has code as editor then use `-a` param to cd and `-g` to open file
+      3. if toml does not have editor params then it will open like `cd $dir; $EDITOR $file`
+
+2. Donwload binary
+3. For adding file for the first time
+  1. cd into project
+  2. `conf my_awsome_folder_inside_project/my_awesome_file.py`
+
